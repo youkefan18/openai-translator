@@ -30,6 +30,11 @@ python-multipart = "^0.0.6"
 langchain = "^0.0.315"
 pydantic-settings = "^2.0.3"
 python-dotenv = "^1.0.0"
+transformers = "^4.35.0"
+sse-starlette = "^1.6.5"
+torch = "^2.1.0"
+accelerate = "^0.24.1"
+sentencepiece = "^0.1.99"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.4.0"

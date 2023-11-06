@@ -6,10 +6,11 @@ from typing import List, Optional
 
 #append parent path for easier testing
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config import Settings
 from datamodel.history import History
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
+from config import Settings
 from utils import LOG
 
 

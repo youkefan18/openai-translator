@@ -1,7 +1,10 @@
-import pandas as pd
 from enum import Enum, auto
+
+import pandas as pd
 from PIL import Image as PILImage
+
 from utils import LOG
+
 
 class ContentType(Enum):
     TEXT = auto()
