@@ -1,8 +1,14 @@
+import sys
+from pathlib import Path
 from typing import Optional
+
 from model import Model
 from translator.pdf_parser import PDFParser
 from translator.writer import Writer
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from utils import LOG
+
 
 class PDFTranslator:
     def __init__(self, model: Model):

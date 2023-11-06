@@ -1,17 +1,21 @@
-import os
 import sqlite3
+
+#append parent path for easier testing
 import sys
+from pathlib import Path
 from sys import exception
 from typing import List, Optional
 
-#append parent path for easier testing
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from datamodel.history import History
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from config import Settings
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from datamodel.history import History
+
 from utils import LOG
+
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+from config import Settings
 
 
 class SqliteDb:

@@ -1,4 +1,6 @@
 import os
+import sys
+from pathlib import Path
 
 from datamodel import Book, ContentType
 from reportlab.lib import colors, pagesizes, units
@@ -13,6 +15,8 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from utils import LOG
 
 

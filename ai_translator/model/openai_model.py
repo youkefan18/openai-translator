@@ -1,4 +1,6 @@
+import sys
 import time
+from pathlib import Path
 
 import openai
 import requests
@@ -6,6 +8,8 @@ from model import Model
 from openai import error
 from simplejson import errors as se
 from typing_extensions import override
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from utils import LOG
 
 

@@ -1,8 +1,12 @@
+import sys
+from pathlib import Path
 from typing import Optional
 
 import pdfplumber
 from datamodel import Book, Content, ContentType, Page, TableContent
 from translator.exceptions import PageOutOfRangeException
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from utils import LOG
 
 

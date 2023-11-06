@@ -1,11 +1,15 @@
+import sys
 from ast import main
 from itertools import cycle
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import requests
 import streamlit as st
 from st_aggrid import AgGrid, DataReturnMode, GridOptionsBuilder, GridUpdateMode, JsCode
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from utils import LOG
 
 st.set_page_config(layout="wide", page_title="OpenAI PDF Translator V2")

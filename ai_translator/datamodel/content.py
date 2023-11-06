@@ -1,8 +1,11 @@
+import sys
 from enum import Enum, auto
+from pathlib import Path
 
 import pandas as pd
 from PIL import Image as PILImage
 
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from utils import LOG
 
 
