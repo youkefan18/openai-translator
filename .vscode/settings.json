@@ -1,0 +1,8 @@
+{   "python.analysis.packageIndexDepths": [{"name": "langchain", "depth": 4, "includeAllSymbols": true}],
+    "cSpell.words": [
+        "langchain",
+        "pydantic",
+        "gradio"
+    ],
+    "cSpell.allowCompoundWords": true
+}

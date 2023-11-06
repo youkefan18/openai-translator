@@ -1,0 +1,89 @@
+[tool.poetry]
+name = "openai-translator"
+version = "0.1.0"
+description = ""
+authors = ["Kefan You <you_kefan@github.com>"]
+readme = "chapter7-homework.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+pdfplumber = "^0.10.2"
+simplejson = "^3.19.1"
+requests = "^2.31.0"
+pyyaml = "^6.0.1"
+pillow = "^10.0.1"
+reportlab = "^4.0.5"
+pandas = "^2.1.1"
+loguru = "^0.7.2"
+openai = "^0.28.1"
+scipy = "^1.11.3"
+tenacity = "^8.2.3"
+tiktoken = "^0.5.1"
+termcolor = "^2.3.0"
+streamlit = "^1.27.2"
+sqlalchemy = {extras = ["mypy"], version = "^2.0.21"}
+streamlit-aggrid = "^0.3.4.post3"
+ray = "^2.7.1"
+fastapi = "^0.103.2"
+uvicorn = "^0.23.2"
+python-multipart = "^0.0.6"
+langchain = "^0.0.315"
+pydantic-settings = "^2.0.3"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.4.0"
+pytest = "^7.4.2"
+pytest-asyncio = "^0.21.1"
+mypy = "^1.5.1"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.isort]
+profile = "black"
+atomic = true
+line_length = 88
+use_parentheses = true
+
+[tool.black]
+line_length = 88
+include = '\.pyi?$'
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+warn_return_any = true
+warn_unused_configs = true
+exclude = "tests"
+# for strict mypy: (this is the tricky one :-))
+disallow_untyped_defs = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+#TODO: Poetry script not working
+# [tool.poetry.scripts]
+# start = 'openai-translator.test:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+priority = "default"
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://mirrors.cloud.tencent.com/pypi/simple/"
+priority = "primary"

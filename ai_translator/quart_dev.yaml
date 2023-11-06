@@ -1,0 +1,12 @@
+ENV:
+  dev
+FILESTORE:
+  TYPE:
+    local
+  URL:
+    d:/Playground/openai-translatoropenai_translator/tests
+DATABASE:
+  TYPE:
+    sqllite
+  URL:
+    d:/Playground/openai-translatoropenai_translator/tests/translations.db
