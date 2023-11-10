@@ -9,10 +9,10 @@ from attr import field
 from backend_db import SqliteDb
 from fastapi import Depends, FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from utils import LOG
 
 from ai_translator.translator.pdf_translator import PDFTranslator
 from config import get_settings
-from utils import LOG
 
 #Init Quart App
 app = FastAPI()
@@ -31,7 +31,7 @@ app.add_middleware(
 config = get_settings()
 
 #Init Ray
-ray.init(num_cpus=2)
+ray.init(num_cpus=2, local_mode=(config.ENVIRONMENT=='dev'))
 
 ## Set up database
 db = SqliteDb(config)
@@ -40,8 +40,8 @@ db = SqliteDb(config)
 
 @dataclass
 class QueryTranslate:
-    language: str
-    model: Literal["openai-gpt-3.5-turbo", "chatglm-gpt-3.5-turbo", "api2d-gpt-3.5-turbo"]
+    language: Literal["Chinese", "Italian"]
+    model: Literal["api2d-gpt-3.5-turbo", "openai-gpt-3.5-turbo", "chatglm-gpt-3.5-turbo"]
     file_ext: Literal["PDF", "markdown"]
     page_num: int = 1
     filename: Optional[str] = None
