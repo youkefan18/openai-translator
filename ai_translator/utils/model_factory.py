@@ -11,6 +11,9 @@ from langchain_model.api2d_model import Api2dLLM
 
 
 class ModelFactory:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
     
     @classmethod
     def get_model(cls, model:str, **kwargs) ->BaseLanguageModel:
