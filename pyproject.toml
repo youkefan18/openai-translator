@@ -3,7 +3,7 @@ name = "openai-translator"
 version = "0.1.0"
 description = ""
 authors = ["Kefan You <you_kefan@github.com>"]
-readme = "chapter7-homework.md"
+readme = "chapter7-17-homework.md"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
@@ -76,8 +76,8 @@ init_typed = true
 warn_required_dynamic_aliases = true
 
 #TODO: Poetry script not working
-# [tool.poetry.scripts]
-# start = 'openai-translator.test:main'
+[tool.poetry.scripts]
+frondend = 'openai_translator.test:main'
 
 [build-system]
 requires = ["poetry-core"]

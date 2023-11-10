@@ -1,4 +1,5 @@
 # Chatper7,17 Homework - OpenAI-Translator v2.0
+
 ## Features
 1. GUI interface
 2. Support original layout of pdf
@@ -10,3 +11,5 @@
 1. Install git lfs
 2. Download model from [modelscope](https://modelscope.cn/models/ZhipuAI/chatglm3-6b/summary)
 3. Specify model path by replacing model name with path in `from_pretrained("THUDM/chatglm3-6b",` statements.
+4. Run `python chatglm_server\chatglm_api.py`. The endpoint url is `http://localhost:8000/v1/`
+5. Test run `tests\tests_chatglm.py`
