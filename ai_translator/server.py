@@ -2,14 +2,16 @@ import dataclasses
 import os
 import time
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 import ray
 from attr import field
 from backend_db import SqliteDb
-from config import get_settings
 from fastapi import Depends, FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+
+from ai_translator.translator.pdf_translator import PDFTranslator
+from config import get_settings
 from utils import LOG
 
 #Init Quart App
@@ -39,9 +41,9 @@ db = SqliteDb(config)
 @dataclass
 class QueryTranslate:
     language: str
-    model: str
-    file_ext: str
-    page_num: int = field(default=0)
+    model: Literal["openai-gpt-3.5-turbo", "chatglm-gpt-3.5-turbo", "api2d-gpt-3.5-turbo"]
+    file_ext: Literal["PDF", "markdown"]
+    page_num: int = 1
     filename: Optional[str] = None
 
     def __reduce__(self):
@@ -76,7 +78,8 @@ async def translation(files: List[UploadFile], data: QueryTranslate = Depends())
     for file in files: 
         data.filename = file.filename
         LOG.info(f'Translating {data.page_num} pages of {data} to language {data.language} using mdoel {data.model}')
-        result[file.filename] = translate.remote(file=file.read(), param=data) # type: ignore
+        content = await file.read()
+        result[file.filename] = translate.remote(file=content, param=data) # type: ignore
     output = ray.get(list(result.values()))
     return output
 
@@ -89,8 +92,17 @@ def translate(file, param: QueryTranslate):
     #path = app.config['FILESTORE']['URL'] #[IMPORTANT] Sending quart config will cause serialze problem
     path = './'
     outfilename = f'{path}/translated_{timestamp}.{param.file_ext}'
-    with open(outfilename, 'wb') as output_file:
-        output_file.write(file)
+
+    translator = PDFTranslator(param.model)
+    translated = translator.translate_pdf(
+        input_file=file, 
+        output_file_format=param.file_ext,
+        target_language=param.language,
+        pages=param.page_num
+    )
+
+    # with open(outfilename, 'wb') as output_file:
+    #     output_file.write(file)
     print(f'Translated file! {outfilename}')
     return os.path.abspath(outfilename)
 
