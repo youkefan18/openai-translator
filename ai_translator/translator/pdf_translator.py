@@ -20,7 +20,8 @@ class PDFTranslator:
                     output_file_format: str = 'markdown',
                     source_language: str = "English",
                     target_language: str = 'Chinese',
-                    pages: Optional[int] = None):
+                    pages: Optional[int] = None,
+                    output_file_prefix: Optional[str] = None):
         
         self.book = self.pdf_parser.parse_pdf(input_file, pages)
 
@@ -28,10 +29,12 @@ class PDFTranslator:
             for content_idx, content in enumerate(page.contents):
                 # Translate content.original
                 translation, status = self.translate_chain.run(content, source_language, target_language)
+                #translation, status =(str(content), True) #For test purpose
+                
                 # Update the content in self.book.pages directly
                 self.book.pages[page_idx].contents[content_idx].set_translation(translation, status)
         
-        return self.writer.save_translated_book(self.book, output_file_format)
+        return self.writer.save_translated_book(self.book, output_file_format, output_file_prefix)
     
 if __name__ == "__main__":
     translator = PDFTranslator("api2d-gpt-3.5-turbo")

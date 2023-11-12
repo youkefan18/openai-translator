@@ -35,6 +35,7 @@ sse-starlette = "^1.6.5"
 torch = "^2.1.0"
 accelerate = "^0.24.1"
 sentencepiece = "^0.1.99"
+werkzeug = "^3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.4.0"

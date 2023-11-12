@@ -20,16 +20,16 @@ def main():
     my_uploads = st.sidebar.file_uploader("Upload a PDF", type=["pdf"], accept_multiple_files=True)
 
     #Target Lanugage
-    language = st.sidebar.radio("**Translate to:**", ("chinese","french","italian"))
+    language = st.sidebar.radio("**Translate to:**", ("chinese","italian"))
 
     #Model Selection
-    model = st.sidebar.radio("**Choose a model**", ("gpt-3.5-turbo","ChatGLM","api2d"))
+    model = st.sidebar.radio("**Choose a model**", ("openai-gpt-3.5-turbo","chatglm-gpt-3.5-turbo","api2d-gpt-3.5-turbo"))
 
     #Page number
     page_num = st.sidebar.number_input("Number of Pages", value = "min", step = 1, min_value = 0)
 
     #Output File Format
-    ofile_ext = st.sidebar.radio("**Output file format**", ("pdf","html"))
+    ofile_ext = st.sidebar.radio("**Output file format**", ("pdf","markdown"))
 
     def translate():
         if my_uploads is None:
@@ -80,12 +80,12 @@ def main():
                 pd.Timedelta(microseconds=50),
                 pd.Timedelta(microseconds=10)
                 ])
+        import time
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
         dummy_data = {
             "date_time_naive":pd.date_range('2021-01-01', periods=samples),
-            "apple":np.random.randint(0,100,samples) / 3.0,
-            "banana":np.random.randint(0,100,samples) / 5.0,
-            "chocolate":np.random.randint(0,100,samples),
-            "group": np.random.choice(['A','B'], size=samples),
+            "original_file":f"test_{timestamp}.pdf",
+            "translated_file":f"test_{timestamp}.pdf",
             "date_only":pd.date_range('2020-01-01', periods=samples).date,
             "timedelta":[next(deltas) for i in range(samples)],
             "date_tz_aware":pd.date_range('2022-01-01', periods=samples, tz="Asia/Katmandu"),
@@ -99,9 +99,8 @@ def main():
     gb.configure_column("date_only", type=["dateColumnFilter","customDateTimeFormat"], custom_format_string='yyyy-MM-dd', pivot=True)
     gb.configure_column("date_tz_aware", type=["dateColumnFilter","customDateTimeFormat"], custom_format_string='yyyy-MM-dd HH:mm zzz', pivot=True)
 
-    gb.configure_column("apple", type=["numericColumn","numberColumnFilter","customNumericFormat"], precision=2, aggFunc='sum')
-    gb.configure_column("banana", type=["numericColumn", "numberColumnFilter", "customNumericFormat"], precision=1, aggFunc='avg')
-    gb.configure_column("chocolate", type=["numericColumn", "numberColumnFilter", "customCurrencyFormat"], custom_currency_symbol="R$", aggFunc='max')
+    gb.configure_column("original_file", type=["numericColumn","numberColumnFilter","customNumericFormat"], precision=2, aggFunc='sum')
+    gb.configure_column("translated_file", type=["numericColumn", "numberColumnFilter", "customNumericFormat"], precision=1, aggFunc='avg')
 
     gridOptions = gb.build()
     grid_height = 200

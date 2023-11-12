@@ -1,6 +1,8 @@
+import pathlib
 import sys
+from io import BufferedReader, BytesIO
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import pdfplumber
 from datamodel import Book, Content, ContentType, Page, TableContent
@@ -14,7 +16,7 @@ class PDFParser:
     def __init__(self):
         pass
 
-    def parse_pdf(self, pdf_file_path: str, pages: Optional[int] = None) -> Book:
+    def parse_pdf(self, pdf_file_path: Union[str, pathlib.Path, BufferedReader, BytesIO], pages: Optional[int] = None) -> Book:
         book = Book(pdf_file_path)
 
         with pdfplumber.open(pdf_file_path) as pdf:

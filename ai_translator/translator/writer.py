@@ -1,6 +1,7 @@
-import os
 import sys
+import time
 from pathlib import Path
+from typing import Optional
 
 from datamodel import Book, ContentType
 from reportlab.lib import colors, pagesizes, units
@@ -24,20 +25,30 @@ class Writer:
     def __init__(self):
         pass
 
-    def save_translated_book(self, book: Book, output_file_path: str = None, file_format: str = "PDF"):
-        if file_format.lower() == "pdf":
-            self._save_translated_book_pdf(book, output_file_path)
-        elif file_format.lower() == "markdown":
-            self._save_translated_book_markdown(book, output_file_path)
+    def save_translated_book(self, book: Book, ouput_file_format: str, output_file_prefix: Optional[str] = None):
+        LOG.debug(ouput_file_format)
+
+        if ouput_file_format.lower() == "pdf":
+            result_path = self._save_translated_book_pdf(book, output_file_prefix)
+        elif ouput_file_format.lower() == "markdown":
+            result_path = self._save_translated_book_markdown(book, output_file_prefix)
         else:
-            raise ValueError(f"Unsupported file format: {file_format}")
+            LOG.error(f"不支持文件类型: {ouput_file_format}")
+            return ""
 
-    def _save_translated_book_pdf(self, book: Book, output_file_path: str = None):
-        if output_file_path is None:
-            output_file_path = book.pdf_file_path.replace('.pdf', f'_translated.pdf')
+        LOG.info(f"翻译完成，文件保存至: {result_path}")
 
-        LOG.info(f"pdf_file_path: {book.pdf_file_path}")
-        LOG.info(f"开始翻译: {output_file_path}")
+        return result_path
+
+
+    def _save_translated_book_pdf(self, book: Book, output_file_prefix: Optional[str] = None):
+        import time
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
+        #path = app.config['FILESTORE']['URL'] #[IMPORTANT] Sending quart config will cause serialze problem
+        path = './'
+        output_file_path=  f'{path}/translated_{timestamp}.pdf' if output_file_prefix is None else f"{output_file_prefix}.pdf"
+
+        LOG.info(f"开始导出: {output_file_path}")
 
         # Register Chinese font
         font_path = "../fonts/simsun.ttc"  # 请将此路径替换为您的字体文件路径
@@ -84,14 +95,16 @@ class Writer:
 
         # Save the translated book as a new PDF file
         doc.build(story)
-        LOG.info(f"翻译完成: {output_file_path}")
+        return output_file_path
 
-    def _save_translated_book_markdown(self, book: Book, output_file_path: str = None):
-        if output_file_path is None:
-            output_file_path = book.pdf_file_path.replace('.pdf', f'_translated.md')
 
-        LOG.info(f"pdf_file_path: {book.pdf_file_path}")
-        LOG.info(f"开始翻译: {output_file_path}")
+    def _save_translated_book_markdown(self, book: Book, output_file_prefix: Optional[str] = None):
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
+        #path = app.config['FILESTORE']['URL'] #[IMPORTANT] Sending quart config will cause serialze problem
+        path = './'
+        output_file_path=  f'{path}/translated_{timestamp}.md' if output_file_prefix is None else f"{output_file_prefix}.md"
+
+        LOG.info(f"开始导出: {output_file_path}")
         with open(output_file_path, 'w', encoding='utf-8') as output_file:
             # Iterate over the pages and contents
             for page in book.pages:
@@ -115,4 +128,4 @@ class Writer:
                 if page != book.pages[-1]:
                     output_file.write('---\n\n')
 
-        LOG.info(f"翻译完成: {output_file_path}")
+        return output_file_path
