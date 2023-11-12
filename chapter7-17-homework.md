@@ -27,6 +27,7 @@ python chatglm_server/chatglm_api.py
    ![Alt text](images/swagger-ui2.png)
 4. Support for other languages
 5. Support other models like ChatGLM, Api2d (via model_factory.py to create langchain models)
+6. Distributed and scalable backend via `Ray.io`
 
 ## ChatGlM Deployment
 1. Install git lfs
