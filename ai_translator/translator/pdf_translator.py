@@ -2,13 +2,10 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from model import Model
-from translator.pdf_parser import PDFParser
-from translator.writer import Writer
-
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from chains import TranslationChain
-
+from translator.pdf_parser import PDFParser
+from translator.writer import Writer
 from utils import LOG
 
 
@@ -35,3 +32,13 @@ class PDFTranslator:
                 self.book.pages[page_idx].contents[content_idx].set_translation(translation, status)
         
         return self.writer.save_translated_book(self.book, output_file_format)
+    
+if __name__ == "__main__":
+    translator = PDFTranslator("api2d-gpt-3.5-turbo")
+    translated = translator.translate_pdf(
+        input_file="tests/test.pdf", 
+        output_file_format="pdf",
+        target_language="Chinese",
+        pages=1
+    )
+    print(translated)

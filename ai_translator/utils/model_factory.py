@@ -17,16 +17,20 @@ class ModelFactory:
     
     @classmethod
     def get_model(cls, model:str, **kwargs) ->BaseLanguageModel:
-        _model_map:Dict[str, type] = {"openai": type(ChatOpenAI), "api2d": type(Api2dLLM), "chatglm": type(ChatOpenAI)}
+        _model_map:Dict[str, type] = {"openai": ChatOpenAI, "api2d": Api2dLLM, "chatglm": ChatOpenAI}
         model_class = model.split("-")[0]
         
         if _model_map.get(model_class) is None:
             raise ClassFoundException(f"Model class not found for key {model_class}")
         clz = _model_map.get(model_class, type(Api2dLLM))
         model_name = model.split(f"{model_class}-")[-1]
-        llm = clz(model_name=model_name, *kwargs)
+        llm = clz(model_name=model_name, **kwargs)
 
         if model_class == "chatglm":
             llm.openai_api_base = "http://localhost:8000/v1"
 
         return llm
+
+if __name__ == "__main__":
+    llm = ModelFactory.get_model(model = "api2d-gpt-3.5-turbo", verbose=True)
+    print(llm)
